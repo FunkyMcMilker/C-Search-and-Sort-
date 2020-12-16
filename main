@@ -1,0 +1,104 @@
+#include<iostream>
+#include<iomanip>
+#include<algorithm>
+#include <ctime>
+#include <chrono>
+
+using namespace std;
+
+class product
+{
+public:
+    int id, price;
+    string name;
+    
+    product ( int ID = 0, string NAME = "None" , int PRICE =0)
+    {
+        id = ID;
+        name = NAME;
+        price = PRICE;
+    }
+};
+
+int binarySearch(product array[], int arrsize, int id)
+{
+
+    int lowerbound = 0, mid = 0;
+do
+    {
+        mid = (arrsize + lowerbound) / 2;
+        if (id == array[mid].id)
+        {
+            return mid;
+        }
+        if (id > array[mid].id)
+        {
+            lowerbound = mid + 1;
+    
+        }
+        if (id < array[mid].id)
+        {
+            arrsize = mid - 1;
+        }
+    }while(lowerbound <= arrsize);
+    return -1;
+}
+
+product copyArray(product array[], int size)
+{
+    product copy[size];
+    for(int x = 0; x < size ; x++)
+    {
+        copy[x] = array[x];
+    }
+    return copy[size];
+}
+
+void showArray(product array[], int size)
+{
+    for (int x = 0 ; x < size ; x++)
+    {
+        cout<< array[x].id << array[x].name <<  array[x].price << endl;
+    }
+}
+int main()
+{
+    int id = 0, pos = 0;
+    int const SIZE = 100;
+    product prodarray[SIZE];
+    for (int i = 0; i < SIZE ; i++)
+    {
+        prodarray[i] = product ((i*10) + (1 +rand()%10), "Stuff", rand() % 1000);
+    }
+    showArray(prodarray, SIZE);
+    cout << "Enter product ID to search for : " ;
+    cin >> id;
+   int b =  binarySearch(prodarray, SIZE, id);
+    if ( b == -1)
+    {
+        cout << "ID not Found" <<endl;
+    }
+    else{
+        cout <<" ID found in index " << b << endl;
+    }
+    int lowest = prodarray[0].price;
+    for (int x = 0 ; x < SIZE ; x++)
+    {
+        if (prodarray[x].price < lowest)
+        {
+            lowest = prodarray[x].price;
+            pos = x;
+        }
+    }
+    cout << "The lowest price item is : " << prodarray[pos].name << "  ID : " << prodarray[pos].id << "  Price : " << prodarray[pos].price << endl;
+    
+    product newArrayCopy = copyArray(prodarray, SIZE);
+    
+    showArray(&newArrayCopy, SIZE);
+    
+    system ("pause");
+    return 0;
+}
+
+
+
